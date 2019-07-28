@@ -1,37 +1,49 @@
+
 #include <stdio.h>
-#include<stdlib.h>
-int bs(char *a[],int l,int h,int num)
+int searc(int *a,int l,int h,int num)
 {
- if(l>h)
- {
-     return -1;
- }
-     int mid=l+(h-l)/2;
-     if(atoi(a[mid])==num)
-     return mid;
-     if(atoi(a[l])<=atoi(a[mid]))
-     {
-	     if(num>=atoi(a[l]) && num<=atoi(a[mid-1]))
-         return bs(a,l,mid-1,num);
-     
-         return bs(a,mid+1,h,num);
-     }
-     if(num>=atoi(a[mid+1]) && num<=atoi(a[h]))
-	     return bs(a,mid+1,h,num);
-     return bs(a,l,mid-1,num);
-
+    if(l>h)
+    return -1;
+    int mid=l+(h-l)/2;
+    if(a[mid]==num)
+    return mid;
+    else if(num<a[mid])
+    return searc(a,l,mid-1,num);
+    else
+    return searc(a,mid+1,h,num);
 }
-int main(int argc,char *argv[])
+int pv(int n,int *a)
 {
-    int l=1;
-    int h=argc;
-    int num;
-    scanf("%d",&num);
-int index= bs(argv,l,h,num);
-if(index>0)
-	printf("%d",index);
-else
-	printf("not present");
+    for(int i=0;i<n/2;i++)
+    {
+        if(a[i]>a[i+1])
+        return i;
+        if(a[n-1-i]<a[n-1-i-1])
+        return n-1-i-1;
+    }
 }
-
+int main()
+{
+    int n,num,l=0;
+    scanf("%d %d",&n,&num);
+    int a[n];
+    int h=n-1;
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+    int pivot=pv(n,a);
+    if(num==a[pivot])
+    printf("%d",pivot);
+    else if(num>=a[0])
+    {
+    int pos=searc(a,l,pivot-1,num);
+    printf("%d",pos);
+    }
+    else
+    {
+    int pos=searc(a,pivot+1,h,num);
+    printf("%d",pos);
+    }
+}
 
